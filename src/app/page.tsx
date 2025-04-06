@@ -1,7 +1,9 @@
 'use client';
 import { useReadContract } from "thirdweb/react";
 import { client } from "./client";
-import { baseSepolia } from "thirdweb/chains";
+// import { baseSepolia } from "thirdweb/chains";
+import { defineChain } from "thirdweb";
+const myChain = defineChain(6342);
 import { getContract } from "thirdweb";
 import { CampaignCard } from "@/components/CampaignCard";
 import { CROWDFUNDING_FACTORY } from "./constants/contracts";
@@ -10,7 +12,7 @@ export default function Home() {
   // Get CrowdfundingFactory contract
   const contract = getContract({
     client: client,
-    chain: baseSepolia,
+    chain: myChain,
     address: CROWDFUNDING_FACTORY,
   });
 
@@ -20,6 +22,7 @@ export default function Home() {
     method: "function getAllCampaigns() view returns ((address campaignAddress, address owner, string name)[])",
     params: []
   });
+  // console.log(campaigns);
 
   return (
     <main className="mx-auto max-w-7xl px-4 mt-4 sm:px-6 lg:px-8">

@@ -4,7 +4,11 @@ import { CROWDFUNDING_FACTORY } from "@/app/constants/contracts";
 import { MyCampaignCard } from "@/components/MyCampaignCard";
 import { useState } from "react";
 import { getContract } from "thirdweb";
-import { baseSepolia } from "thirdweb/chains";
+// import { baseSepolia } from "thirdweb/chains";
+import { defineChain } from "thirdweb";
+
+const myChain = defineChain(6342);
+
 import { deployPublishedContract } from "thirdweb/deploys";
 import { useActiveAccount, useReadContract } from "thirdweb/react"
 
@@ -15,7 +19,7 @@ export default function DashboardPage() {
 
     const contract = getContract({
         client: client,
-        chain: baseSepolia,
+        chain: myChain,
         address: CROWDFUNDING_FACTORY,
     });
 
@@ -26,6 +30,8 @@ export default function DashboardPage() {
         params: [account?.address as string]
     });
     
+    // console.log(myCampaigns);
+
     return (
         <div className="mx-auto max-w-7xl px-4 mt-16 sm:px-6 lg:px-8">
             <div className="flex flex-row justify-between items-center mb-8">
@@ -83,7 +89,7 @@ const CreateCampaignModal = (
             console.log("Deploying contract...");
             const contractAddress = await deployPublishedContract({
                 client: client,
-                chain: baseSepolia,
+                chain: myChain,
                 account: account!,
                 contractId: "Crowdfunding",
                 contractParams: [
@@ -92,8 +98,8 @@ const CreateCampaignModal = (
                     campaignGoal,
                     campaignDeadline
                 ],
-                publisher: "0xEe29620D0c544F00385032dfCd3Da3f99Affb8B2",
-                version: "1.0.6",
+                publisher: "0xcdfaf91329393cf332f3915e8c3fFd8126CD17ab",
+                version: "1.0.0",
             });
             alert("Contract deployed successfully!");
         } catch (error) {
@@ -101,7 +107,9 @@ const CreateCampaignModal = (
         } finally {
             setIsDeployingContract(false);
             setIsModalOpen(false);
-            refetch
+            console.log("should be done creating contract");
+            // refetch
+            window.location.reload();
         }
     };
 

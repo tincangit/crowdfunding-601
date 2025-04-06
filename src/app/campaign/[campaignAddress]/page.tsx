@@ -4,7 +4,10 @@ import { TierCard } from "@/components/TierCard";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { getContract, prepareContractCall, ThirdwebContract } from "thirdweb";
-import { baseSepolia } from "thirdweb/chains";
+// import { baseSepolia } from "thirdweb/chains";
+import { defineChain } from "thirdweb";
+
+const myChain = defineChain(6342);
 import { lightTheme, TransactionButton, useActiveAccount, useReadContract } from "thirdweb/react";
 
 export default function CampaignPage() {
@@ -15,7 +18,7 @@ export default function CampaignPage() {
 
     const contract = getContract({
         client: client,
-        chain: baseSepolia,
+        chain: myChain,
         address: campaignAddress as string,
     });
 
