@@ -1,5 +1,6 @@
 'use client';
 import { client } from "@/app/client";
+import { CHAIN_ID } from "@/app/constants/contracts";
 import { TierCard } from "@/components/TierCard";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -7,7 +8,7 @@ import { getContract, prepareContractCall, ThirdwebContract } from "thirdweb";
 // import { baseSepolia } from "thirdweb/chains";
 import { defineChain } from "thirdweb";
 
-const myChain = defineChain(6342);
+const myChain = defineChain(CHAIN_ID);
 import { lightTheme, TransactionButton, useActiveAccount, useReadContract } from "thirdweb/react";
 
 export default function CampaignPage() {

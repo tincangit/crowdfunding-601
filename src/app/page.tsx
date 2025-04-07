@@ -3,10 +3,11 @@ import { useReadContract } from "thirdweb/react";
 import { client } from "./client";
 // import { baseSepolia } from "thirdweb/chains";
 import { defineChain } from "thirdweb";
-const myChain = defineChain(6342);
+import { CHAIN_ID, CROWDFUNDING_FACTORY } from "./constants/contracts";
+const myChain = defineChain(CHAIN_ID);
 import { getContract } from "thirdweb";
 import { CampaignCard } from "@/components/CampaignCard";
-import { CROWDFUNDING_FACTORY } from "./constants/contracts";
+
 
 export default function Home() {
   // Get CrowdfundingFactory contract

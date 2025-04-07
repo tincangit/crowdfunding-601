@@ -1,13 +1,13 @@
 'use client';
 import { client } from "@/app/client";
-import { CROWDFUNDING_FACTORY } from "@/app/constants/contracts";
+import { CHAIN_ID, CROWDFUNDING_FACTORY } from "@/app/constants/contracts";
 import { MyCampaignCard } from "@/components/MyCampaignCard";
 import { useState } from "react";
 import { getContract } from "thirdweb";
 // import { baseSepolia } from "thirdweb/chains";
 import { defineChain } from "thirdweb";
 
-const myChain = defineChain(6342);
+const myChain = defineChain(CHAIN_ID);
 
 import { deployPublishedContract } from "thirdweb/deploys";
 import { useActiveAccount, useReadContract } from "thirdweb/react"

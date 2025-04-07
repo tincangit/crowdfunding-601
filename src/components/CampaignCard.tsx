@@ -1,9 +1,10 @@
 import { client } from "@/app/client";
+import { CHAIN_ID } from "@/app/constants/contracts";
 import Link from "next/link";
 import { getContract } from "thirdweb";
 // import { baseSepolia } from "thirdweb/chains";
 import { defineChain } from "thirdweb";
-const myChain = defineChain(6342);
+const myChain = defineChain(CHAIN_ID);
 import { useReadContract } from "thirdweb/react";
 
 type CampaignCardProps = {
