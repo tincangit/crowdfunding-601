@@ -20,7 +20,7 @@ export const TierCard: React.FC<TierCardProps> = ({ tier, index, contract, isEdi
             <div>
                 <div className="flex flex-row justify-between items-center">
                     <p className="text-2xl font-semibold">{tier.name}</p>
-                    <p className="text-2xl font-semibold">${tier.amount.toString()}</p>
+                    <p className="text-2xl font-semibold">{tier.amount.toString()} wei</p>
                 </div>
             </div>
             <div className="flex flex-row justify-between items-end">
@@ -33,7 +33,10 @@ export const TierCard: React.FC<TierCardProps> = ({ tier, index, contract, isEdi
                         value: tier.amount,
                     })}
                     onError={(error) => alert(`Error: ${error.message}`)}
-                    onTransactionConfirmed={async () => alert("Funded successfully!")}
+                    onTransactionConfirmed={async (receipt) => {
+                        console.log("Transaction confirmed. Hash:", receipt.transactionHash);
+                        alert("Funded successfully!")
+                    }}
                     style={{
                         marginTop: "1rem",
                         backgroundColor: "#2563EB",

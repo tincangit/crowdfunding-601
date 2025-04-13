@@ -43,10 +43,21 @@ export default function CampaignPage() {
         method: "function deadline() view returns (uint256)",
         params: [],
     });
+
+    const { data: contribution } = useReadContract({
+        contract,
+        method: "function backers(address) view returns (uint256 totalContribution)",
+        params: [account?.address || "0x0000000000000000000000000000000000000000"],
+    });
     // Convert deadline to a date
     const deadlineDate = new Date(parseInt(deadline?.toString() as string) * 1000);
     // Check if deadline has passed
     const hasDeadlinePassed = deadlineDate < new Date();
+
+    // log contribution
+    // console.log(contribution);
+    // const userTotalContribution = contribution.toString();
+    // console.log(userTotalContribution);
 
     // Goal amount of the campaign
     const { data: goal, isLoading: isLoadingGoal } = useReadContract({
@@ -128,10 +139,10 @@ export default function CampaignPage() {
             </div>
             {!isLoadingBalance && (
                 <div className="mb-4">
-                    <p className="text-lg font-semibold">Campaign Goal: ${goal?.toString()}</p>
+                    <p className="text-lg font-semibold">Campaign Goal: {goal?.toString()} wei</p>
                     <div className="relative w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
                         <div className="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-right" style={{ width: `${balancePercentage?.toString()}%`}}>
-                            <p className="text-white dark:text-white text-xs p-1">${balance?.toString()}</p>
+                            <p className="text-white dark:text-white text-xs p-1">{balance?.toString()} wei</p>
                         </div>
                         <p className="absolute top-0 right-0 text-white dark:text-white text-xs p-1">
                             {balancePercentage >= 100 ? "" : `${balancePercentage?.toString()}%`}
@@ -178,7 +189,56 @@ export default function CampaignPage() {
                     contract={contract}
                 />
             )}
+
+            {owner === account?.address && status === 1 && (
+                <div className="my-4">
+                    <TransactionButton
+                        transaction={() =>
+                            prepareContractCall({
+                                contract: contract,
+                                method: "function withdraw()",
+                                params: [],
+                            })
+                        }
+                        onTransactionConfirmed={() => alert("Withdrawal successful!")}
+                        onError={(error) => alert(`Withdrawal failed: ${error.message}`)}
+                        theme={lightTheme()}
+                        disabled={parseInt(balance?.toString() || "0") === 0}
+                    >
+                        Withdraw Funds
+                    </TransactionButton>
+                </div>
+            )}
+
+            {account?.address && (
+                <div className="my-4">
+                    <p className="mb-2">
+                        Your contribution: {contribution !== undefined ? `${contribution.toString()} wei` : "0 wei"}
+                    </p>
+
+                    {status === 2 && (
+                        <TransactionButton
+                            transaction={() =>
+                                prepareContractCall({
+                                    contract: contract,
+                                    method: "function refund()",
+                                    params: [],
+                                })
+                            }
+                            onTransactionConfirmed={() => alert("Refund successful!")}
+                            onError={(error) => alert(`Refund failed: ${error.message}`)}
+                            theme={lightTheme()}
+                            disabled={!contribution || parseInt(contribution.toString()) === 0}
+                        >
+                            Request Refund
+                        </TransactionButton>
+                    )}
+                </div>
+            )}
+
+
         </div>
+        
     );
 }
 
